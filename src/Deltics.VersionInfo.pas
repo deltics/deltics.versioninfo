@@ -120,6 +120,7 @@ interface
       function get_CompanyName: String;
       function get_FileDescription: String;
       function get_FileVersion: String;
+      function get_FileVersionNo: String;
       function get_InternalName: String;
       function get_LegalCopyright: String;
       function get_LegalTrademarks: String;
@@ -127,6 +128,7 @@ interface
       function get_PrivateBuild: String;
       function get_ProductName: String;
       function get_ProductVersion: String;
+      function get_ProductVersionNo: String;
       function get_SpecialBuild: String;
 
       property HasInfo: Boolean read get_HasInfo;
@@ -134,13 +136,14 @@ interface
       property CompanyName: String      read get_CompanyName;
       property FileDescription: String  read get_FileDescription;
       property FileVersion: String      read get_FileVersion;
+      property FileVersionNo: String    read get_FileVersionNo;
       property InternalName: String     read get_InternalName;
       property LegalCopyright: String   read get_LegalCopyright;
       property LegalTrademarks: String  read get_LegalTrademarks;
       property OriginalFileName: String read get_OriginalFileName;
       property PrivateBuild: String     read get_PrivateBuild;
       property ProductName: String      read get_ProductName;
-      property ProductVersion: String   read get_ProductVersion;
+      property ProductVersionNo: String read get_ProductVersionNo;
       property SpecialBuild: String     read get_SpecialBuild;
     end;
 
@@ -152,6 +155,7 @@ interface
       function get_CompanyName: String;
       function get_FileDescription: String;
       function get_FileVersion: String;
+      function get_FileVersionNo: String;
       function get_InternalName: String;
       function get_LegalCopyright: String;
       function get_LegalTrademarks: String;
@@ -159,6 +163,7 @@ interface
       function get_PrivateBuild: String;
       function get_ProductName: String;
       function get_ProductVersion: String;
+      function get_ProductVersionNo: String;
       function get_SpecialBuild: String;
 
     private
@@ -176,13 +181,11 @@ interface
       function get_HasTranslation: Boolean;
       function get_Translation: TTranslationRecord;
       function get_TranslationIndex: Integer;
-      function get_FileVersionNo: TVersionNo;
       function get_InfoDWORD(const aIndex: Integer): DWORD;
       function get_InfoSTRING(const aIndex: Integer): String;
       function get_ItemName(const aItem: TVersionItem): String;
       function get_ItemValue(const aItem: TVersionItem): String;
       function get_NamedInfo(const aName: String): String;
-      function get_ProductVersionNo: TVersionNo;
       procedure set_FileName(const aValue: String);
       procedure set_TranslationIndex(const aValue: Integer);
 
@@ -198,9 +201,6 @@ interface
       property FileSubType: DWORD   index INFODW_FileSubType    read get_InfoDWORD;
       property FileFlagsMask: DWORD index INFODW_FileFlagsMask  read get_InfoDWORD;
       property FileFlags: DWORD     index INFODW_FileFlags      read get_InfoDWORD;
-
-      property FileVersionNo: TVersionNo read get_FileVersionNo;
-      property ProductVersionNo: TVersionNo read get_ProductVersionNo;
 
       property Comments: String         index INFOSTR_Comments         read get_InfoSTRING;
       property CompanyName: String      index INFOSTR_CompanyName      read get_InfoSTRING;
@@ -364,12 +364,16 @@ implementation
   end;
 
 
-  function TVersionInfo.get_FileVersionNo: TVersionNo;
+  function TVersionInfo.get_FileVersionNo: String;
+  var
+    num: TVersionNo;
   begin
-    result.Major    := HiWord(fFixedInfo.dwFileVersionMS);
-    result.Minor    := LoWord(fFixedInfo.dwFileVersionMS);
-    result.Revision := HiWord(fFixedInfo.dwFileVersionLS);
-    result.Build    := LoWord(fFixedInfo.dwFileVersionLS);
+    num.Major    := HiWord(fFixedInfo.dwFileVersionMS);
+    num.Minor    := LoWord(fFixedInfo.dwFileVersionMS);
+    num.Revision := HiWord(fFixedInfo.dwFileVersionLS);
+    num.Build    := LoWord(fFixedInfo.dwFileVersionLS);
+
+    result := VersionToStr(num);
   end;
 
 
@@ -425,12 +429,16 @@ implementation
   end;
 
 
-  function TVersionInfo.get_ProductVersionNo: TVersionNo;
+  function TVersionInfo.get_ProductVersionNo: String;
+  var
+    num: TVersionNo;
   begin
-    result.Major    := HiWord(fFixedInfo.dwProductVersionMS);
-    result.Minor    := LoWord(fFixedInfo.dwProductVersionMS);
-    result.Revision := HiWord(fFixedInfo.dwProductVersionLS);
-    result.Build    := LoWord(fFixedInfo.dwProductVersionLS);
+    num.Major    := HiWord(fFixedInfo.dwProductVersionMS);
+    num.Minor    := LoWord(fFixedInfo.dwProductVersionMS);
+    num.Revision := HiWord(fFixedInfo.dwProductVersionLS);
+    num.Build    := LoWord(fFixedInfo.dwProductVersionLS);
+
+    result := VersionToStr(num);
   end;
 
 
