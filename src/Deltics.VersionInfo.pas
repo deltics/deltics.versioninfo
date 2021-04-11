@@ -143,6 +143,7 @@ interface
       property OriginalFileName: String read get_OriginalFileName;
       property PrivateBuild: String     read get_PrivateBuild;
       property ProductName: String      read get_ProductName;
+      property ProductVersion: String   read get_ProductVersion;
       property ProductVersionNo: String read get_ProductVersionNo;
       property SpecialBuild: String     read get_SpecialBuild;
     end;
